@@ -481,6 +481,13 @@ int SrsLiveStream::serve_http(ISrsHttpResponseWriter* w, ISrsHttpMessage* r)
 {
     int ret = ERROR_SUCCESS;
     
+    size_t pos = 0;
+    if ((pos = r->url().find("?")) != std::string::npos) {
+        req->param = r->url().substr(pos);
+    } else {
+        req->param = "";
+    }
+    
     if ((ret = http_hooks_on_play()) != ERROR_SUCCESS) {
         srs_error("http hook on_play failed. ret=%d", ret);
         return ret;
